@@ -82,7 +82,8 @@ let birthdays = [
     renderBlock.push(
       Ui:C:mfm({
         text: charactersText
-        size: 1.5
+        size: 1.5,
+        bold: true
       })
     )
     renderBlock.push(
