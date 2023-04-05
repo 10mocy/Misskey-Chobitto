@@ -1,0 +1,104 @@
+// ↓ 誕生日データ ここから
+let birthdays = [
+  [122 ["さとうささら"]]
+  [127 ["IA" "ONE"]]
+  [203 ["ついなちゃん"]]
+  [213 ["東北きりたん"]]
+  [223 ["すずきつづみ"]]
+  [227 ["伊織弓鶴"]]
+  [302 ["花隈千冬"]]
+  [303 ["月読アイ"]]
+  [330 ["鳴花ヒメ・ミコト"]]
+  [405 ["彩澄しゅお"]]
+  [423 ["アリアル・ミリアル"]]
+  [425 ["琴葉茜・葵"]]
+  [505 ["月読ショウタ"]]
+  [509 ["v flower"]]
+  [516 ["小春六花"]]
+  [624 ["東北イタコ"]]
+  [626 ["GUMI"]]
+  [705 ["京町セイカ"]]
+  [720 ["アベルーニ"]]
+  [721 ["結城香" "瀬崎かずき" "日ノ出賢"]]
+  [726 ["桜乃そら"]]
+  [727 ["吉田くん"]]
+  [730 ["音街ウナ"]]
+  [805 ["ギャラ子"]]
+  [821 ["四国めたん"]]
+  [829 ["彩澄りりせ"]]
+  [915 ["弦巻マキ"]]
+  [917 ["風見壮一"]]
+  [926 ["タカハシ"]]
+  [1027 ["東北ずん子"]]
+  [1029 ["水無瀬コウ"]]
+  [1128 ["つくよみちゃん"]]
+  [1222 ["結月ゆかり" "紲星あかり"]]
+]
+// ↑ 誕生日データ ここまで
+
+@getFormattedMonthDate() {
+  let rawMonth = Date:month()
+  let rawDate = Date:day()
+  
+  var formattedMonth = rawMonth.to_str()
+  var formattedDate = rawDate.to_str()
+  
+  if rawDate < 10 {
+    formattedDate = `0{formattedDate}`
+  }
+  
+  return `{formattedMonth}{formattedDate}`.to_num()
+}
+
+@getBirthdayCharacters() {
+  let todayDate = getFormattedMonthDate()
+  // let todayDate = 516
+  var todayBirthdayCharacters = []
+
+  each (let birthday, birthdays) {
+    if (todayDate != birthday[0]) continue
+    if (todayDate > birthday[0]) break
+    
+    let characters = birthday[1]
+    each (let character, characters) {
+      todayBirthdayCharacters.push(`{character}さん`)
+    }
+  }
+
+  return todayBirthdayCharacters
+}
+
+@main() {
+  let renderBlock = [
+    Ui:C:mfm({
+      text: '本日お誕生日のキャラクター！'
+      size: 1
+    })
+  ]
+
+  let characters = getBirthdayCharacters()
+  if (characters.len != 0) {
+    var charactersText = characters.join(', ')
+    renderBlock.push(
+      Ui:C:mfm({
+        text: charactersText
+        size: 1.5
+      })
+    )
+    renderBlock.push(
+      Ui:C:mfm({
+        text: '🎉 おめでとうございます！'
+      })
+    )
+  } else {
+    renderBlock.push(
+      Ui:C:mfm({
+        text: 'いません！'
+      })
+    )
+  }
+
+  Ui:render(renderBlock)
+}
+
+main()
